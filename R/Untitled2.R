@@ -9,6 +9,6 @@
 #' add_numbers(5, 3)
 #' add_numbers(-2, 10)
 #' @export
-add_numbers <- function(a, b) {
+add_numbe <- function(a, b) {
   return(a + b)
 }
