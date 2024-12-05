@@ -1,2 +1,2 @@
-data/ARIC_trained_models.rda filter=lfs diff=lfs merge=lfs -text
+
 *.rda binary
