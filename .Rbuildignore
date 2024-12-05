@@ -1,2 +1,9 @@
 ^LPAI\.Rproj$
 ^\.Rproj\.user$
+^\.git$
+^\.gitignore$
+^\.DS_Store$
+^README\.Rmd$
+^README\.html$
+^.*\.tar\.gz$
+
