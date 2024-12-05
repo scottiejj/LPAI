@@ -1,1 +1,10 @@
-.Rproj.user
+# Ignore R-related temporary files
+.Rhistory
+.RData
+.Rproj.user/
+
+# Ignore compiled package files
+*.tar.gz
+
+# Ignore macOS-specific files
+.DS_Store
