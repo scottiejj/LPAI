@@ -11,11 +11,12 @@ get_cox_coef(
   time_to_event,
   event,
   alpha = 0.5,
-  nFPCs = 2
+  nFPCs = 2,
+  lambda = NULL
 )
 }
 \arguments{
-\item{trained_models}{A list of trained FPCA models where each element contains \code{train_scores}.}
+\item{trained_models}{A named list of trained FPCA models, where each element contains \code{fpca_model} and associated train scores.}
 
 \item{id}{A string specifying the column name in \code{surv_data} containing IDs (default: \code{"id"}).}
 
@@ -28,12 +29,38 @@ get_cox_coef(
 \item{alpha}{A numeric value (default: 0.5) for elastic net mixing (0 = Ridge, 1 = LASSO).}
 
 \item{nFPCs}{A numeric value specifying the number of principal components to use (default: 2).}
+
+\item{lambda}{A numeric value specifying a fixed lambda for the elastic net. If \code{NULL}, lambda is selected using 10fold cross-validation.}
 }
 \value{
-A named numeric vector of coefficients for the selected principal components.
+A named numeric vector of coefficients for the selected principal components, with descriptive names.
 }
 \description{
-This function concatenates the first \code{nFPCs} principal component scores (e.g., FPC1, FPC2)
-from FPCA results across all models and fits a Cox regression model using elastic net regularization.
-Lambda is selected using 10-fold cross-validation.
+This function performs Cox regression using the concatenated functional principal component (FPC) scores
+from FPCA results across all models. It uses elastic net regularization to fit the model, with an option
+to specify a custom lambda or use cross-validation to select the optimal lambda.
+}
+\examples{
+\dontrun{
+
+data("ARIC_trained_models")  # Example FPCA trained models
+surv_data <- data.frame(
+  id = 1:100,
+  time = rexp(100, rate = 0.1),
+  status = sample(0:1, 100, replace = TRUE)
+)
+coefs <- get_cox_coef(
+  trained_models = ARIC_trained_models,
+  id = "id",
+  surv_data = surv_data,
+  time_to_event = "time",
+  event = "status",
+  alpha = 0.5,
+  nFPCs = 2
+)
+print(coefs)
+}
+
+
+
 }

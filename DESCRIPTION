@@ -2,8 +2,8 @@ Package: LPAI
 Title: Tools for Calculating Longitudinal Proteomic Aging Index(LPAI)
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Zexi", "Rao", email = "rao00138@umn.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9640-3725")
 Description: Provides tools for calculating LPAI using Functional Principal Component Analysis (FPCA).
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -11,14 +11,13 @@ RoxygenNote: 7.3.2
 Depends:
     R (>= 3.5.0)
 Imports:
-    doFuture,
-    doRNG,
+    doParallel,
     dplyr,
     fdapace,
     foreach,
-    future,
     glmnet,
     magrittr,
+    parallel,
     survival,
     tidyr
 Suggests: 

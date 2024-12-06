@@ -22,10 +22,11 @@ prepare_data <- function(data, protein_index) {
   p=colnames(data)[protein_index]
   selected_columns <- c("id", "age", p)
   data_i <- data[,selected_columns] # Select id, age, and the specified protein column
-
+  original_id_order <- as.character(unique(data$id))
   # Prepare the data in wide format
   data_wide <- data_i %>%
     tidyr::pivot_wider(names_from = id, values_from = all_of(p)) %>% # Convert to wide format
-    dplyr::arrange(age) # Arrange by age
+    dplyr::arrange(age) %>%
+    dplyr::select(age, all_of(original_id_order)) # Arrange by age
   return(data_wide)
 }

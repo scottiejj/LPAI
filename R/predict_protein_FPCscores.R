@@ -35,7 +35,8 @@
 #' @export
 #'
 #'
-predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_models, protein_indices,nFPCs=2, Seqid=F) {
+predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_models, protein_indices,
+                                      nFPCs=2, Seqid=F) {
 
   # Validate input: Ensure required columns are present
   if (!all(c("id", "age") %in% colnames(test_data))) {
@@ -135,7 +136,7 @@ predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_m
         if(is.na(protein_name)){
           next
         }
-        message(sprintf("%s not found in pre-trained FPCA models. Skipping.", names(test_data_new)[protein_index]))
+        message(sprintf("%s not found in pre-trained FPCA models. Skipping.", names(test_data)[protein_index]))
         next
       }
 

@@ -2,31 +2,39 @@
 % Please edit documentation in R/train_FPCA_protein.R
 \name{train_FPCA_protein}
 \alias{train_FPCA_protein}
-\title{Train FPCA Models for Proteins}
+\title{Train Functional Principal Component Analysis (FPCA) Models for Proteins}
 \usage{
 train_FPCA_protein(data, protein_indices, cores = 1)
 }
 \arguments{
-\item{data}{A data frame containing \code{id}, \code{age}, and protein columns.}
+\item{data}{A data frame containing columns \code{id}, \code{age}, and protein measurements.}
 
-\item{protein_indices}{Numeric vector of column indices for the protein data in \code{data}.}
+\item{protein_indices}{Numeric vector indicating the column indices of the protein data in \code{data}.}
 
-\item{cores}{Number of cores for parallel computation (default: 1).}
+\item{cores}{Integer specifying the number of cores for parallel computation (default: 1).}
 }
 \value{
 A named list where each element corresponds to a protein, containing:
 \describe{
 \item{fpca_model}{The trained FPCA model.}
-\item{train_scores}{Data frame of FPCA scores for each sample.}
+\item{id}{A vector of unique sample IDs extracted from the input data.}
 }
 }
 \description{
-Trains Functional Principal Component Analysis (FPCA) models for specified protein columns in the dataset using parallel processing.
+This function trains FPCA models for specified protein columns in the dataset using parallel processing.
+It validates input data, handles duplicates, and ensures compatibility of column indices.
+}
+\details{
+This function processes the input data and trains FPCA models for each specified protein column in parallel.
+Each FPCA model captures the functional structure of protein data with respect to age.
+
+The function ensures that age values are rounded to integers before training the models.
+
+Parallel processing is implemented using the \code{foreach} and \code{doParallel} packages.
 }
 \examples{
 \dontrun{
 data(example.train.data)
-
 result <- train_FPCA_protein(example.train.data, protein_indices = 3:4, cores = 2)
 print(result[[1]])
 }
