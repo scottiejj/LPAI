@@ -1,7 +1,7 @@
 
 # LPAI
 LPAI provides tools for calculating the Longitudinal Proteomic Aging Index using Functional Principal Component Analysis (FPCA). 
-It allows users to either directly calculate LPAI using pretrained weights from 208 FPCs of 204 unique proteins or train their own models on custom datasets.
+It allows users to either directly calculate LPAI using pretrained weights from 185 FPCs of 181 unique proteins or train their own models on custom datasets.
 
 ## Installation
 
@@ -21,7 +21,7 @@ devtools::install_github("scottiejj/LPAI")
 ### Example: Calculating LPAI Using Pretrained Weights
 
 This example demonstrates how to calculate LPAI directly using our pretrained weights from 4684 proteins measured in the ARIC study.
-The protein data is measured using the SomaScan platform, expressed in relative fluorescence units (RFU), and is NOT log-transformed.
+The protein data is measured using the SomaScan platform, expressed in relative fluorescence units (RFU), and log-transformed.
 
 - Input data should Be in wide format.
 
