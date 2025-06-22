@@ -8,3 +8,7 @@
 
 # Ignore macOS-specific files
 .DS_Store
+# R project files to ignore
+.Rproj.user/
+*.Rproj
+
