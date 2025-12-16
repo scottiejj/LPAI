@@ -130,10 +130,10 @@ lpai.test
 
 ## Interpreting LPAI
 
-- LPAI is a linear predictor from a Cox model: $\text{LPAI} = \sum_i x_i \, \beta_i$, where $x_i$ are FPC scores.
-- Higher LPAI indicates higher estimated risk (hazard). The hazard ratio for an individual is $\exp(\text{LPAI})$.
-- Units are arbitrary; the scale depends on data and model. For comparison:
-  - Compare individuals by differences in LPAI; a difference of $\Delta$ implies $\exp(\Delta)$ fold change in hazard.
+- LPAI is a linear predictor from a Cox model: $\text{LPAI} = \sum_i x_i \ \beta_i$, where $x_i$ are FPC scores.
+- Higher LPAI indicates higher estimated risk (hazard).
+- Units are arbitrary; the scale depends on cohort. For comparison:
+  - Compare individuals in the same cohort by differences in LPAI; a difference of $\Delta$ implies $\exp(\Delta)$ fold change in hazard.
   - You can center or standardize LPAI (e.g., z-score) to improve interpretability across cohorts.
 
 ## Troubleshooting
