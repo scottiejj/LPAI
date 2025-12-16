@@ -94,10 +94,12 @@ surv_data <- data.frame(
 )
 
 # 1) Train FPCA models (logs to protein_train_log.txt)
+# Parallel computing: increase 'cores' to use multiple CPU cores via doParallel.
+
 trained_models <- train_FPCA_protein(
   data = train.data,
   protein_indices = 3:4,
-  cores = 2
+  cores = 2 # parallel computing; more cores -> faster training
 )
 
 # 2) Fit elastic-net Cox and get coefficients
