@@ -6,7 +6,7 @@ LPAI is an R package for computing the Longitudinal Proteomic Aging Index using 
 - Using the included pretrained model based on 181 proteins selected from a 4,684-protein panel to compute LPAI for new test data.
 - Training your own model on longitudinal proteomics data: fit FPCA, then an elastic-net Cox model to derive a custom LPAI.
 
-The pretrained model were developed from proteins measured in the ARIC study (Atherosclerosis Risk in Communities) using the SomaScan platform; values are expressed in relative fluorescence units (RFU) and log-transformed.
+The pretrained model was developed from proteins measured in the ARIC study (Atherosclerosis Risk in Communities) using the SomaScan platform; values are expressed in relative fluorescence units (RFU) and log-transformed.
 
 The package includes example data and ID mappings to help you get started quickly.
 
