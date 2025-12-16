@@ -24,11 +24,11 @@
 #' data(example.test.data)
 #'
 #' # Predict FPC scores
-#'test_fpc_scores <- predict_protein_FPCscores(
-#'  test_data = example.test.data,
-#'  trained_models = ARIC_trained_models,
-#'  protein_indices = c(3, 4),
-#'  nFPCs = 2,Seqid = T
+#' test_fpc_scores <- predict_protein_FPCscores(
+#'   test_data = example.test.data,
+#'   trained_models = ARIC_trained_models,
+#'   protein_indices = c(3, 4),
+#'   nFPCs = 2, Seqid = T
 #' )
 #' print(test_fpc_scores)
 #' }
@@ -36,8 +36,7 @@
 #'
 #'
 predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_models, protein_indices,
-                                      nFPCs=2, Seqid=F) {
-
+                                      nFPCs = 2, Seqid = FALSE) {
   # Validate input: Ensure required columns are present
   if (!all(c("id", "age") %in% colnames(test_data))) {
     stop("The test data must include 'id' and 'age' columns.")
@@ -63,12 +62,12 @@ predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_m
   }
 
 
-  #Check duplicate age
-  dup<-test_data %>%
-    group_by(id,age) %>%
+  # Check duplicate age
+  dup <- test_data %>%
+    group_by(id, age) %>%
     filter(n() > 1) %>%
     pull(id)
-  if(length(dup)>1){
+  if (length(dup) > 1) {
     stop(sprintf(
       "Duplicated IDs with duplicate age values found: %s. These observations have been removed.",
       paste(dup, collapse = ", ")
@@ -100,25 +99,24 @@ predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_m
 
 
     # Rename columns
-    seqid_old<-colnames(test_data[protein_indices])
+    seqid_old <- colnames(test_data[protein_indices])
 
     uniprot <- ifelse(seqid_old %in% id_mapping$seqid,
-                      yes=id_mapping$uniprot[match(seqid_old, id_mapping$seqid)],
-                      no=seqid_old)
-    seqid_dup<-seqid_old[duplicated(uniprot)]
-    test_data<-test_data%>%select(-all_of(seqid_dup))
+      yes = id_mapping$uniprot[match(seqid_old, id_mapping$seqid)],
+      no = seqid_old
+    )
+    seqid_dup <- seqid_old[duplicated(uniprot)]
+    test_data <- test_data %>% select(-all_of(seqid_dup))
     # Subset id_mapping to include only columns in test_data
     relevant_mapping <- id_mapping[id_mapping$seqid %in% colnames(test_data), ]
 
-    test_data_new <- test_data%>%
+    test_data_new <- test_data %>%
       dplyr::rename_with(
         .cols = relevant_mapping$seqid,
         .fn = ~ dplyr::recode(., !!!setNames(relevant_mapping$uniprot, relevant_mapping$seqid))
-      )%>%as.data.frame()
-
-  }
-
-  else{
+      ) %>%
+      as.data.frame()
+  } else {
     test_data_new <- test_data
   }
 
@@ -126,45 +124,44 @@ predict_protein_FPCscores <- function(test_data, trained_models = ARIC_trained_m
   # Initialize a list to store FPC scores for each protein
   score_list <- list()
 
-    # Loop through each protein index
-    for (protein_index in protein_indices) {
-
-      # Get protein name
-      protein_name <- colnames(test_data_new)[protein_index]
-      # Check if a trained model exists for this protein
-      if (!protein_name %in% names(trained_models)) {
-        if(is.na(protein_name)){
-          next
-        }
-        message(sprintf("%s not found in pre-trained FPCA models. Skipping.", names(test_data)[protein_index]))
+  # Loop through each protein index
+  for (protein_index in protein_indices) {
+    # Get protein name
+    protein_name <- colnames(test_data_new)[protein_index]
+    # Check if a trained model exists for this protein
+    if (!protein_name %in% names(trained_models)) {
+      if (is.na(protein_name)) {
         next
       }
-
-      print(sprintf("Calculating FPC scores for protein %s ",protein_name))
-
-      # Prepare test data for the current protein
-      data_wide <- prepare_data(test_data_new, protein_index)
-      # Create Ly and Lt lists for prediction
-      Ly_list <- lapply(2:ncol(data_wide), function(x) na.omit(data_wide[[x]]))
-      Lt_list <- lapply(2:ncol(data_wide), function(x) data_wide$age[!is.na(data_wide[[x]])])
-
-      # Get the trained FPCA model
-      fpca_model <- trained_models[[protein_name]][["fpca_model"]]
-
-      # Predict FPCA scores
-      predicted_scores <- predict(fpca_model, newLy = Ly_list, newLt = Lt_list)
-
-      # Extract the first two FPC scores and name the columns
-      fpc_scores <- predicted_scores$scores[, 1:nFPCs, drop = FALSE]
-      colnames(fpc_scores) <- paste0(protein_name, "_FPC", 1:nFPCs)
-
-      # Add the scores to the list
-      score_list[[protein_name]] <- fpc_scores
+      message(sprintf("%s not found in pre-trained FPCA models. Skipping.", names(test_data)[protein_index]))
+      next
     }
+
+    print(sprintf("Calculating FPC scores for protein %s ", protein_name))
+
+    # Prepare test data for the current protein
+    data_wide <- prepare_data(test_data_new, protein_index)
+    # Create Ly and Lt lists for prediction
+    Ly_list <- lapply(2:ncol(data_wide), function(x) na.omit(data_wide[[x]]))
+    Lt_list <- lapply(2:ncol(data_wide), function(x) data_wide$age[!is.na(data_wide[[x]])])
+
+    # Get the trained FPCA model
+    fpca_model <- trained_models[[protein_name]][["fpca_model"]]
+
+    # Predict FPCA scores
+    predicted_scores <- predict(fpca_model, newLy = Ly_list, newLt = Lt_list)
+
+    # Extract the first two FPC scores and name the columns
+    fpc_scores <- predicted_scores$scores[, 1:nFPCs, drop = FALSE]
+    colnames(fpc_scores) <- paste0(protein_name, "_FPC", 1:nFPCs)
+
+    # Add the scores to the list
+    score_list[[protein_name]] <- fpc_scores
+  }
 
 
   # Combine all scores into a single data frame
-  id=colnames(data_wide)[-1]
+  id <- colnames(data_wide)[-1]
   final_scores <- as.data.frame(do.call(cbind, score_list))
   final_scores <- cbind(id, final_scores)
 

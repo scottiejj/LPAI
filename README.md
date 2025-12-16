@@ -49,7 +49,6 @@ test_fpc_scores <- predict_protein_FPCscores(
   test_data = example.test.data,
   trained_models = ARIC_trained_models,
   protein_indices = c(3, 4),
-  nFPCs = 2,
   Seqid = TRUE  # convert SeqId names in your data to UniProt
 )
 
@@ -128,7 +127,7 @@ lpai.test
 
 ## Interpreting LPAI
 
-- LPAI is a linear predictor from a Cox model: $\text{LPAI} = \sum_i x_i \ \beta_i$, where $x_i$ are FPC scores.
+- LPAI is a linear predictor from a Cox model: $\text{LPAI} = \sum_i x_i \ \beta_i$, where $x_i$ are the first two FPC scores.
 - Higher LPAI indicates higher estimated risk (hazard).
 - Units are arbitrary; the scale depends on cohort. For comparison:
   - Compare individuals in the same cohort by differences in LPAI; a difference of $\Delta$ implies $\exp(\Delta)$ fold change in hazard.
