@@ -57,8 +57,6 @@ test_fpc_scores <- predict_protein_FPCscores(
 lpai <- get_LPAI(test_fpc_scores = test_fpc_scores, cox_coefs = aric_coef)
 lpai
 
-# Optional: hazard ratio per individual
-transform(lpai, hazard_ratio = exp(LPAI))
 ```
 
 Tips:
